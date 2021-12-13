@@ -1,9 +1,11 @@
+
 body {
   margin: 0;
   text-align: center;
   font-family: "Merriweather Sans", sans-serif;
   color:#40514e;
   line-height: 2;
+  height: 98%;
 }
 hr{
     border-bottom: none;
@@ -127,11 +129,31 @@ hr{
   cursor: pointer;
 }
 
+.contact-form{
+    display: flex;
+    flex-direction: column;
+    width:35%;
+    margin:10em auto 0 auto;
+    background-image: linear-gradient(#009DAE,#C2FFF9);
+    padding:2em 5em;
+    border-radius: .25em;
+    box-shadow: 15px 15px 10px #000000;
+}
+
+.contact-form input, textarea{
+   margin: .5em;
+    padding: 1.25em;
+    border-radius: .25em;
+    border: none;
+     box-shadow: 5px 5px 10px #000000;
+}
+
+
 .footer{ 
-  position:sticky;
-  top: 100%;    
-  background-color: #C2FFF9;
-  height: 1.5em;
+  position:fixed;
+  bottom:0;
+  background-color: rgba(194, 255, 249, 0.73);
+  height: 1em;
   padding: 1.5em;
   width: 100%;   
   font-size: .75rem;  

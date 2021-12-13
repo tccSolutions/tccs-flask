@@ -70,13 +70,11 @@
             <div class='contact-me'>           
                 <h2>Get In Touch</h2>
                 <h3>Need some techy stuff done or want to talk horses? Reach out and let me see what I can do for you!</h3>
-                <a class='btn' href="">Contact Me</a>
+                <a class='btn' href="{{ url_for('contact_me') }}">Contact Me</a>
             </div>
         </div> 
 
-        <div class='footer'>
-            <p>©2021 TCCS.TECH</p>
-        </div> 
+       {% include 'footer.html' %}
 </body>
 
 
