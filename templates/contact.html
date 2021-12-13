@@ -5,8 +5,9 @@
     <link rel="stylesheet" href="../static/styles/styles.css"/>
     <title>Contact Me</title>
 </head>
-<body>
-
+<body>   
+    {% include 'nav.html' %}
+   
     <form class="contact-form">
         <h2>Contact Me</h2>
         {{form.name(placeholder="Please enter your name.")}}
@@ -14,6 +15,7 @@
         {{form.message(placeholder="Please enter your message.", rows=10)}}
         <input class="btn" type="submit" value="Send"/>
     </form>
+    {% include 'tim.html' %}
   {% include 'footer.html' %}
 </body>
 </html>

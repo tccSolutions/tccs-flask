@@ -7,6 +7,41 @@ body {
   line-height: 2;
   height: 98%;
 }
+
+nav{
+  display:inline-block;
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 7%;
+  background-color: #009daeb4;  
+  border-bottom:1px solid black;
+  box-shadow: 5px 10px 15px black;
+}
+nav a{
+  position: relative;
+  float:left;
+  top:35%;
+  padding:.25em;
+  padding-bottom: 0;
+  margin-right: 1em;  
+  text-decoration: none;
+  border-radius: .25em;
+  font-family: "Merriweather Sans", sans-serif;
+  color: #ffffff;
+  font-size: 1.25em;
+}
+nav a:nth-child(1){
+  margin-left: 2em;
+}
+nav a:hover{
+  cursor: pointer;
+  background-color: rgba(128, 128, 128, 0.39);
+  box-shadow: 5px 5px 5px black;
+  transform: scale(1.05);
+  transition: transform .25s ease-in;
+}
 hr{
     border-bottom: none;
     border-top: 15px dotted #71DFE7;
@@ -129,12 +164,43 @@ hr{
   cursor: pointer;
 }
 
+.contact-color-background{
+  position: fixed;
+ top:14%;
+  background-color: #0cdfeebd;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.tim-bg{
+  display: inline-block;
+  position: fixed;
+  top:0;
+  left:0;
+  background-image: linear-gradient(#f1f1f1, #018d9c);
+  padding-top: 0em;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  z-index: -1;
+}
+
+.tim-bg h1 {
+  margin-top: 2em;
+  font-family: "Sacramento", cursive;
+  font-size: 5em;
+}
+.tim-bg p {
+  margin: 0 auto;
+  font-size: 1.5em;
+}
 .contact-form{
     display: flex;
     flex-direction: column;
-    width:35%;
-    margin:10em auto 0 auto;
-    background-image: linear-gradient(#009DAE,#C2FFF9);
+    width:25%;
+    margin:10em auto 0 3em;
+    background-image: linear-gradient(#009dae88,#c2fff970);
     padding:2em 5em;
     border-radius: .25em;
     box-shadow: 15px 15px 10px #000000;
