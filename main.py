@@ -1,15 +1,13 @@
 import os
-
 import gunicorn
 import psycopg2
 from flask import Flask, render_template, url_for, request, redirect
 from flask_mail import Mail, Message
-
 from forms.contact_form import ContactForm
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
+app.config["SECRET_KEY"] = "os.getenv('SECRET_KEY')"
 app.config["MAIL_SERVER"] = os.getenv('MAIL_SERVER')
 app.config["MAIL_USERNAME"] = os.getenv('MAIL_USERNAME')
 app.config["MAIL_PASSWORD"] = os.getenv('MAIL_PASSWORD')

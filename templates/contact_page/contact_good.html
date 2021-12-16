@@ -6,7 +6,8 @@
     <title>Message Sent</title>
 </head>
 <body>
-{% include 'nav.html' %}
+{% extends 'index.html' %}
+{%block content%}
 <div class="contact-good">
 
 <h2>Hey {{name}},
@@ -15,6 +16,6 @@
     <br/>Have a great day,
     <br/>Tim</h2>
 </div>
-{% include 'footer.html' %}
+{%endblock%}
 </body>
 </html>
