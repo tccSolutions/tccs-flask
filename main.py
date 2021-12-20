@@ -47,7 +47,7 @@ horse_list = [
             "pic":"https://static1.bigstockphoto.com/2/6/3/large1500/362810416.jpg", 
             "sex":"Gelding", 
             "color":"Bay",
-            "training": "Picks up all four feet, and allows picking. Takes the saddle and has taken a rider. No problem loading."
+            "training": "Gives all four feet and lets them be picked. Several Trail Rides. Loads on trailer"
         },
          {
             "id":3,
