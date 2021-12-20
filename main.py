@@ -58,7 +58,7 @@ horse_list = [
             "pic":"https://cdn.pixabay.com/photo/2016/09/01/19/54/horse-1637400_1280.jpg", 
             "sex":"Mare", 
             "color":"Gray",
-            "training": "Picks up all four feet, and allows picking. Takes the saddle and has taken a rider. No problem loading."
+            "training": "Picks up all four feet. Front feet picked. Has been saddled and rode twice. Best Friend is an Ass."
         },
          {
             "id":4,
