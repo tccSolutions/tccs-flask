@@ -13,9 +13,12 @@
     {% extends 'index.html' %}
     {%block content%}
     <div class="position-fixed mt-5 ms-5">
-        <div>
-            <img src={{horse.images[0]['url']}} class="img-thumbnail" width="150px" alt="..." />
+        {% if horse_images|count > 0  %}
+        console.log({horse_images|count})
+        <div>           
+            <img src={{horse_images[0]['url']}} class="img-thumbnail" width="150px" alt="..." />            
         </div>
+        {% endif %}
         <div>
             <h5>Name: {{horse.name}}</h5>
             <h5>Sex: {{horse.sex}}</h5>
@@ -31,8 +34,8 @@
         <div class="text-center">
             <h3>About {{horse.name}}</h3>
         </div>
-        <div class="w-50 mx-auto mt-4">
-            <h5>{{horse.bio}}</h5>
+        <div class="w-75 mx-auto mt-4">
+            <h5 class="lh-lg">{{horse.bio}}</h5>
         </div>
     </div>
     <hr class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
@@ -41,14 +44,14 @@
             <h3>Training</h3>
         </div>
         <div class="w-50 mx-auto mt-4">
-            <div class="text-center">
-                <h4>Trainers: David Jones, Dwight Mobley</h4>
+            <div class="text-center mb-4">
+                <h5>Trainers: David Jones, Dwight Mobley</h5>
             </div>
 
             <div class="mx-auto text-start" style="width: 65%;">
                 {% for line in horse.training.split(".") %}
                 {% if line != ""%}
-                <li>{{line}}</li>
+                <li class="my-2">{{line}}</li>
                 {%endif%}
                 {% endfor %}
             </div>
@@ -74,7 +77,7 @@
     <div id="large_horse_modal" class="modal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-body">
-                <img src={{horse.images[0]["url"]}} alt="horse image" width="100%" />
+                <img src="" alt="horse image" width="100%" />
             </div>
         </div>
     </div>

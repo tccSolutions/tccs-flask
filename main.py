@@ -103,21 +103,18 @@ def contact_me():
 
 
 @app.route("/horses")
-def horses():
-    
-    global horse_list   
+def horses():        
     horses = db.session.query(Horse).all()
     return render_template('horses.html', horses=horses)
 
 @app.route("/horses/<id>/<name>")
 def horse(name, id):
     selected_horse = Horse.query.filter_by(id=int(id)).first()
-    horse_images = HorseImage.query.filter_by(horse_id = int(id)).all()   
+    horse_images = HorseImage.query.filter_by(horse_id = int(id)).all()     
     return render_template('horse.html', horse=selected_horse, horse_images = horse_images)
 
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
-
     if request.method == "POST":
         current_user = User.query.filter_by(email=request.form["email"]).first()
         if current_user:
@@ -130,7 +127,20 @@ def admin_login():
             flash("Not Today")           
     return render_template('admin.html')
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Successfully Logged Out")
+    return redirect(url_for('index'))
 
+@app.route('/add-horse', methods=["POST"])
+def add_horse():
+    horse = Horse(name=request.form["name"], breed=request.form["breed"], sex=request.form["sex"], age=request.form["age"], price=request.form["price"], training=request.form["training"],
+    saddle_time=request.form["saddle_time"], bio=request.form["bio"], color=request.form["color"], height=request.form['height'])
+    db.session.add(horse)
+    db.session.commit();
+    return redirect(url_for('horses'))
         
 
 if __name__ == "__main__":
