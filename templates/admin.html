@@ -227,10 +227,7 @@
        }
 
        horse_select.onchange = function (){    
-          $.get("{{url_for('get_horses')}}", function(data, status){
-            console.log(data)
-          })
-          
+                   
           document.getElementById("update_name").value = {{horses[0]["name"]|tojson}}
           document.getElementById("update_breed").value = {{horses[0]["breed"]|tojson}}
           document.getElementById("update_color").value = {{horses[1]["color"]|tojson}}
