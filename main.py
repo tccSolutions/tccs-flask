@@ -1,4 +1,5 @@
 import os
+import json
 from flask_sqlalchemy import SQLAlchemy
 import gunicorn
 import psycopg2
@@ -6,6 +7,7 @@ from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_mail import Mail, Message
 from forms.contact_form import ContactForm
 from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -19,6 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///static/data/horse.db'
 mail = Mail(app)
 
 db = SQLAlchemy(app)
+
 
 #Login Manager
 login_manager = LoginManager()
@@ -39,6 +42,8 @@ class Horse(db.Model):
     saddle_time = db.Column(db.String, nullable=False)
     bio = db.Column(db.String, nullable=False)
     images = db.relationship('HorseImage', backref='horse_images', lazy=True)
+   
+    
     
     def __repr__(self):
         return {
@@ -105,7 +110,7 @@ def contact_me():
 @app.route("/horses")
 def horses():        
     horses = db.session.query(Horse).all()
-    return render_template('horses.html', horses=horses)
+    return render_template('horses.html', horses= horses)
 
 @app.route("/horses/<id>/<name>")
 def horse(name, id):
@@ -115,6 +120,7 @@ def horse(name, id):
 
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
+    horses = Horse.query.all()  
     if request.method == "POST":
         current_user = User.query.filter_by(email=request.form["email"]).first()
         if current_user:
@@ -125,7 +131,13 @@ def admin_login():
                 flash("Invalid Password")
         else:
             flash("Not Today")           
-    return render_template('admin.html')
+    return render_template('admin.html', horses= horses)
+
+
+@app.route("/get-horses/<horse_id>", methods=["GET"])
+def get_horses(horse_id):
+     return json.dumps(Horse.query.all())
+
 
 @app.route("/logout")
 @login_required
@@ -139,6 +151,22 @@ def add_horse():
     horse = Horse(name=request.form["name"], breed=request.form["breed"], sex=request.form["sex"], age=request.form["age"], price=request.form["price"], training=request.form["training"],
     saddle_time=request.form["saddle_time"], bio=request.form["bio"], color=request.form["color"], height=request.form['height'])
     db.session.add(horse)
+    db.session.commit();
+    return redirect(url_for('horses'))
+
+@app.route('/update-horse', methods=["POST"])
+def update_horse():       
+    horse = Horse.query.filter_by(id=request.form["id"]).first()
+    horse.name=request.form["name"]
+    horse.breed=request.form["breed"]
+    horse.sex=request.form["sex"]
+    horse.age=request.form["age"]
+    horse.price=request.form["price"]
+    horse.training=request.form["training"]    
+    horse.saddle_time=request.form["saddle_time"]
+    horse.bio=request.form["bio"]
+    horse.color=request.form["color"]
+    horse.height=request.form['height']    
     db.session.commit();
     return redirect(url_for('horses'))
         
