@@ -1,74 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"  href="{{url_for('static', filename='styles/styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/styles.css')}}">
     <title>{{horse.name}}</title>
 </head>
+
 <body>
-    {% extends 'index.html'%}
+    {% extends 'index.html' %}
     {%block content%}
     <div class="position-fixed mt-5 ms-5">
         <div>
-            <img src={{horse.pic}} class="img-thumbnail" width="150px" alt="..."/>            
+            <img src={{horse.images[0]['url']}} class="img-thumbnail" width="150px" alt="..." />
         </div>
         <div>
             <h5>Name: {{horse.name}}</h5>
             <h5>Sex: {{horse.sex}}</h5>
             <h5>Breed: {{horse.breed}}</h5>
             <h5>Color: {{horse.color}}</h5>
-            <h5>Height: 14</h5>
+            <h5>Height:{{horse.height}}</h5>
             <h5>Age: {{horse.age}}</h5>
             <h5>Asking Price: $800</h5>
         </div>
     </div>
-    <hr  class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
+    <hr class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
     <div class="container mt-3 p-5">
         <div class="text-center">
-            <h3 >About {{horse.name}}</h3>
+            <h3>About {{horse.name}}</h3>
         </div>
-        <div class="w-50 mx-auto mt-4">            
+        <div class="w-50 mx-auto mt-4">
             <h5>{{horse.bio}}</h5>
         </div>
     </div>
-    <hr  class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
+    <hr class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
     <div class="container mt-3 mb-5 p-5">
         <div class="text-center">
-            <h3 >Training</h3>
+            <h3>Training</h3>
         </div>
         <div class="w-50 mx-auto mt-4">
             <div class="text-center">
                 <h4>Trainers: David Jones, Dwight Mobley</h4>
             </div>
-            
+
             <div class="mx-auto text-start" style="width: 65%;">
                 {% for line in horse.training.split(".") %}
                 {% if line != ""%}
-                    <li>{{line}}</li>
-                {%endif%}                
+                <li>{{line}}</li>
+                {%endif%}
                 {% endfor %}
-            </div>            
+            </div>
         </div>
     </div>
 
-    <hr  class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
-    <div class="container mt-3 mb-5 p-5">
+    <hr class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
+    <div class="container mt-3 mb-5">
         <div class="text-center">
-            <h3 >Gallery</h3>
+            <h3>Gallery</h3>
         </div>
         <div class="d-flex flex-wrap w-50 mx-auto mt-4">
-            <img src={{horse.pic}} class="img-thumbnail rounded mx-auto d-block" alt="..." width="30%">
-            <img src={{horse.pic}} class="img-thumbnail rounded mx-auto d-block" alt="..." width="30%">
-            <img src={{horse.pic}} class="img-thumbnail rounded mx-auto d-block" alt="..." width="30%">
-            <img src={{horse.pic}} class="img-thumbnail rounded mx-auto d-block" alt="..." width="30%">
-            <img src={{horse.pic}} class="img-thumbnail rounded mx-auto d-block" alt="..." width="30%">
-            <img src={{horse.pic}} class="img-thumbnail rounded mx-auto d-block" alt="..." width="30%">
+            {%for image in horse_images%}
+            <button onclick=setUrl class='card p-2 m-2' data-bs-toggle="modal" data-bs-target="#large_horse_modal">
+                <img class='card-img-top' src={{image.url}} alt="horse image" />
+                <p class='card-text'>{{image.comment}}</p>
+            </button>
+
+
+            {% endfor %}
         </div>
     </div>
+    <div id="large_horse_modal" class="modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-body">
+                <img src={{horse.images[0]["url"]}} alt="horse image" width="100%" />
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        setUrl = function(event){
+            console.log(event.target)
+        }
+    </script>
 
     {%endblock%}
 
+   
+
 </body>
+
 </html>

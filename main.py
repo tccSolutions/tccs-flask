@@ -1,77 +1,90 @@
 import os
+from flask_sqlalchemy import SQLAlchemy
 import gunicorn
 import psycopg2
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_mail import Mail, Message
 from forms.contact_form import ContactForm
+from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-
 app.config["SECRET_KEY"] = "os.getenv('SECRET_KEY')"
 app.config["MAIL_SERVER"] = os.getenv('MAIL_SERVER')
 app.config["MAIL_USERNAME"] = os.getenv('MAIL_USERNAME')
 app.config["MAIL_PASSWORD"] = os.getenv('MAIL_PASSWORD')
 app.config["MAIL_PORT"] = os.getenv('MAIL_PORT')
 app.config['MAIL_USE_SSL'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///static/data/horse.db'
 mail = Mail(app)
 
-horse_list = [
-        {
-            "id":0,
-            "name": "Ty",
-            "age": "16",
-            "breed":"American Mustang",
-            "bio": "Ty is a little shy but is very willing to please. He has no trouble giving up his feet and loading on a trailer. He has been saddled and I have been on his back. We are still working on walking off.",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/d/d6/Smile_Of_A_Horse_%28139382329%29.jpeg", 
-            "sex":"Gelding", 
-            "color":"Red Dun",
-            "training": "Picks up all four feet, and allows picking. Takes the saddle and has taken a rider. No problem loading."
-        },
-         {
-            "id":1,
-            "name": "Jet",
-            "age": "16",
-            "breed":"American Mustang",
-            "bio": "Ty is a little shy but is very willing to please. He has no trouble giving up his feet and loading on a trailer. He has been saddled and I have been on his back. We are still working on walking off.",
-            "pic":"https://cdn.pixabay.com/photo/2020/07/02/21/25/horse-5364441_1280.jpg", 
-            "sex":"Mare", 
-            "color":"Black",
-            "training": "Picks up all four feet, and allows picking. Takes the saddle and has taken a rider. No problem loading."
-        },
-         {
-            "id":2,
-            "name": "Sundance",
-            "age": "16",
-            "breed":"American Mustang",
-            "bio": "Ty is a little shy but is very willing to please. He has no trouble giving up his feet and loading on a trailer. He has been saddled and I have been on his back. We are still working on walking off.",
-            "pic":"https://static1.bigstockphoto.com/2/6/3/large1500/362810416.jpg", 
-            "sex":"Gelding", 
-            "color":"Bay",
-            "training": "Gives all four feet and lets them be picked. Several Trail Rides. Loads on trailer"
-        },
-         {
-            "id":3,
-            "name": "Sue",
-            "age": "16",
-            "breed":"American Mustang",
-            "bio": "Ty is a little shy but is very willing to please. He has no trouble giving up his feet and loading on a trailer. He has been saddled and I have been on his back. We are still working on walking off.",
-            "pic":"https://cdn.pixabay.com/photo/2016/09/01/19/54/horse-1637400_1280.jpg", 
-            "sex":"Mare", 
-            "color":"Gray",
-            "training": "Picks up all four feet. Front feet picked. Has been saddled and rode twice. Best Friend is an Ass."
-        },
-         {
-            "id":4,
-            "name": "Ty",
-            "age": "16",
-            "breed":"American Mustang",
-            "bio": "Ty is a little shy but is very willing to please. He has no trouble giving up his feet and loading on a trailer. He has been saddled and I have been on his back. We are still working on walking off.",
-            "pic":"https://upload.wikimedia.org/wikipedia/commons/d/d6/Smile_Of_A_Horse_%28139382329%29.jpeg", 
-            "sex":"Gelding", 
-            "color":"Red Dun",
-            "training": "Picks up all four feet, and allows picking. Takes the saddle and has taken a rider. No problem loading."
-        }         
-    ]
+db = SQLAlchemy(app)
+
+#Login Manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'admin'
+
+class Horse(db.Model):
+    __tablename__ ="horses"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    breed = db.Column(db.String, nullable=False)
+    height = db.Column(db.Float)
+    color = db.Column(db.String)
+    sex = db.Column(db.String, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float)
+    training = db.Column(db.String, nullable=False)
+    saddle_time = db.Column(db.String, nullable=False)
+    bio = db.Column(db.String, nullable=False)
+    images = db.relationship('HorseImage', backref='horse_images', lazy=True)
+    
+    def __repr__(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "breed": self.breed,
+            "sex": self.sex,
+            "age": self.age,
+            "price": self.price,
+            "training": self.training,
+            "saddle_time": self.saddle_time,
+            "bio": self.bio,
+            "images": self.images
+        }
+
+class HorseImage(db.Model):
+     __tablename__ = "horse_images"
+     id = db.Column(db.Integer, primary_key=True)
+     url = db.Column(db.String, nullable=False)
+     comment = db.Column(db.String)
+     horse_id = db.Column(db.Integer, db.ForeignKey('horses.id'), nullable=False)
+
+     def __repr__(self):
+        return{
+            "image": self.url,
+            "comment": self.comment
+        }
+
+class User(db.Model, UserMixin):
+     __tablename__ = "users"
+     id = db.Column(db.Integer, primary_key=True)
+     email = db.Column(db.String, nullable=False)
+     password = db.Column(db.String, nullable=False)
+     
+     def __repr__(self):
+        return{
+            "email": self.email,
+            "password": self.password
+        }
+     
+
+db.create_all()
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -91,16 +104,33 @@ def contact_me():
 
 @app.route("/horses")
 def horses():
-    global horse_list
-    return render_template('horses.html', horses= horse_list)
+    
+    global horse_list   
+    horses = db.session.query(Horse).all()
+    return render_template('horses.html', horses=horses)
 
 @app.route("/horses/<id>/<name>")
 def horse(name, id):
-    for horse in horse_list:        
-        if horse["id"] == int(id):
-            selected_horse = horse
-            return render_template('horse.html', horse=selected_horse)
-    return redirect(url_for('horses'))
+    selected_horse = Horse.query.filter_by(id=int(id)).first()
+    horse_images = HorseImage.query.filter_by(horse_id = int(id)).all()   
+    return render_template('horse.html', horse=selected_horse, horse_images = horse_images)
+
+@app.route("/admin-login", methods=["GET", "POST"])
+def admin_login():
+
+    if request.method == "POST":
+        current_user = User.query.filter_by(email=request.form["email"]).first()
+        if current_user:
+            if current_user.password == request.form["password"]:
+                login_user(current_user)
+                print("logged in") 
+            else:                
+                flash("Invalid Password")
+        else:
+            flash("Not Today")           
+    return render_template('admin.html')
+
+
         
 
 if __name__ == "__main__":

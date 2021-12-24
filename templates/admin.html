@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends 'index.html' %}
+    {% block content %}
+
+    {% if current_user.is_authenticated %}
+    <h1 class='text-center mt-5 '>What Would You Like To Do?</h1>
+    <div class='d-flex container position-absolute top-50 start-50 translate-middle'>
+       
+        <div class='mx-auto'>
+            <button class="btn btn-info p-5">Update Horse</button>           
+        </div>
+        <div class='mx-auto'>
+            <button class="btn btn-info p-5">Add New Horse</button>           
+        </div>
+
+    </div>
+    {%else%}
+    <div class='container mx-auto mt-5 w-25'>
+        <div>
+            <h1>Login</h1>
+        </div>
+        <form action="{{url_for('admin_login')}}" method="POST">
+            <div class="form-floating mb-3">           
+                <input name="email" type="email" class="form-control" id="email" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+              </div>
+              <div class="form-floating">
+                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="password">Password</label>
+                <input type="submit" class="form-control primary-btn" >
+              </div>
+    
+        </form>       
+    </div>
+    {%endif%}
+
+    {% endblock %}
+</body>
+</html>
