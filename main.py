@@ -134,8 +134,8 @@ def admin_login():
     return render_template('admin.html', horses= horses)
 
 
-@app.route("/get-horses/<horse_id>", methods=["GET"])
-def get_horses(horse_id):
+@app.route("/get-horses", methods=["GET"])
+def get_horses():
      return json.dumps(Horse.query.all())
 
 
