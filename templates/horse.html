@@ -26,7 +26,15 @@
             <h5>Color: {{horse.color}}</h5>
             <h5>Height:{{horse.height}}</h5>
             <h5>Age: {{horse.age}}</h5>
-            <h5>Asking Price: $800</h5>
+            
+            
+            <h5>Asking Price:
+                {%if horse.price < 1 %}
+                    {{horse.price}}
+                    {%else%}
+                        Not For Sale
+                {%endif%}
+            </h5>
         </div>
     </div>
     <hr class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
