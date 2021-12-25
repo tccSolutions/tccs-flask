@@ -168,7 +168,7 @@ def update_horse():
     horse.color=request.form["color"]
     horse.height=request.form['height']    
     db.session.commit();
-    return redirect(url_for('horses'))
+    return redirect(url_for('horse', id=horse.id, name=horse.name))
         
 
 if __name__ == "__main__":

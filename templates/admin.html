@@ -15,9 +15,7 @@
     <!-- SELECTION MENU -->
     <h1 id='title' class='text-center mt-5 '>What Would You Like To Do?</h1>
     <div class='d-flex container position-absolute top-50 start-50 translate-middle'>       
-        <div class='mx-auto'>
-            <button id="update_horse_btn" class="btn btn-info p-5">Update Horse</button>           
-        </div>
+      
         <div class='mx-auto'>
             <button id="add_horse_btn" class="btn btn-info p-5">Add New Horse</button>           
         </div>
@@ -89,82 +87,7 @@
          
         </form>
 
-        <!-- FORM TO UPDATE HORSE -->         
-   
-    <form id="update_horse_form" action="{{url_for('update_horse')}}" method="POST" class="w-50 shadow-lg p-3 position-absolute start-50 translate-middle" 
-    style="visibility: hidden; top:95%">
-        <h2 class="text-center">Update Horse Form</h2>
-        <div class="form-floating">
-          <select name="id" class="form-select w-75 mx-auto mb-3" id="horse_select" aria-label="Floating label select example" required>
-            <option selected>Open this select menu</option>
-            {% for horse in horses %}
-            <option value={{horse.id}}>{{horse.name}}</option>
-            {% endfor %}        
-          </select>
-          <label for="horse_select">Select a Horse</label>
-        </div>
-        
-        <div class="row mx-auto">
-            <div class="form-floating mb-3 w-50 mx-auto row">
-                <input name="name"" type="text" class="form-control" id="update_name">
-                <label for="name">Name</label>
-              </div>
-              <div class="form-floating mb-3  w-50 mx-auto row">
-                <input name="breed"" type="text" class="form-control" id="update_breed">
-                <label for="breed">Breed</label>
-              </div>
-        </div> 
-         
-
-          <div class="row   mx-auto">
-            <div class="form-floating mb-3 col">
-                <input name="color"" type="text" class="form-control" id="update_color">
-                <label for="color">Color</label>
-              </div>             
-              <div class="form-floating mb-3  w-50 mx-auto col">
-                <input name="saddle_time"" type="text" class="form-control" id="update_saddle_time">
-                <label for="saddle_time">Saddle Time</label>
-              </div>
-          </div>         
-
-          <div class="row  mx-auto justify-content-left">
-            <div class="form-floating mb-3 col">
-                <input name="sex"" type="text" class="form-control" id="update_sex">
-                <label for="sex">Sex</label>
-              </div>
-              <div class="form-floating col">
-                <input name="age"" type="number" class="form-control" id="update_age" >
-                <label for="age">Age</label>
-              </div>
-              <div class="form-floating mb-3 col">
-                <input name="height"" type="float" class="form-control" id="update_height">
-                <label for="height">Height</label>
-              </div>
-          </div>
-
-          <div class="form-floating mb-3 col w-25 mx-auto">
-            <input name="price"" type="float" class="form-control" id="update_price">
-            <label for="price">Price</label>
-          </div>
-          <div class="form-floating mb-3">
-            <textarea name="training" class="form-control"  rows="20" style="height: 100%;" placeholder="Enter Completed Training. Place a Period for a new line." id="update_training"></textarea>
-            <label for="training">Enter Training Accomplishments. Periods Start New Bullet Points</label>
-          </div>
-          <div class="form-floating mb-3">
-            <textarea name="bio" class="form-control"  rows="20" style="height: 100%;" placeholder="Enter Bio" id="update_bio"></textarea>
-            <label for="training">Enter Bio</label>
-          </div>
-          <div class='row mb-5'>
-                <div class="form-floating col">
-                    <input type="submit" class="form-control btn btn-info" />           
-                </div>
-                <div class="form-floating col">
-                    <button type="button" class="form-control btn btn-danger cancel_btn">Cancel</button>       
-                </div>
-          </div>
-         
-        </form>
-
+       
     {%else%}
 
      <!-- LOGIN SCREEN -->
@@ -189,10 +112,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        let add_horse_btn = document.getElementById('add_horse_btn')
-        let update_horse_btn = document.getElementById('update_horse_btn')
-        let cancel_button = document.getElementsByClassName("cancel_btn")
-        let horse_select = document.getElementById("horse_select")
+        let add_horse_btn = document.getElementById('add_horse_btn')     
         let add_horse_form =  document.getElementById("add_horse_form")
 
         add_horse_btn.onclick = function(){
@@ -200,13 +120,6 @@
             add_horse_btn.style.visibility="hidden"
             update_horse_btn.style.visibility="hidden"
         }
-
-          update_horse_btn.onclick = function(){
-          update_horse_form.style.visibility = "visible"
-          add_horse_btn.style.visibility="hidden"
-          update_horse_btn.style.visibility="hidden"
-      }
-
 
         cancel_button[0].onclick = function(){
            add_horse_form.style.visibility = 'hidden'
@@ -217,15 +130,7 @@
           document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
         }
 
-        cancel_button[1].onclick = function(){
-          update_horse_form.style.visibility = 'hidden'
-          add_horse_btn.style.visibility="visible"
-          update_horse_btn.style.visibility="visible"
-
-         document.body.scrollTop = 0; // For Safari
-         document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-       }
-
+       
       
     </script>
 
