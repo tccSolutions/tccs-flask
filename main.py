@@ -7,6 +7,7 @@ import psycopg2
 from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_mail import Mail, Message
 from werkzeug.wrappers import response
+from werkzeug.utils import secure_filename
 from forms.contact_form import ContactForm
 from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
 import cloudinary.uploader
@@ -20,25 +21,27 @@ app.config["MAIL_USERNAME"] = os.getenv('MAIL_USERNAME')
 app.config["MAIL_PASSWORD"] = os.getenv('MAIL_PASSWORD')
 app.config["MAIL_PORT"] = os.getenv('MAIL_PORT')
 app.config['MAIL_USE_SSL'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL_1",'sqlite:///static/data/horse.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    "DATABASE_URL_1", 'sqlite:///static/data/horse.db')
 mail = Mail(app)
 
-cloudinary.config( 
-  cloud_name = "dmobley0608", 
-  api_key = "172351854381963", 
-  api_secret = "aHccAD-bj6FasCVv_m_xn2BSjxg" 
+cloudinary.config(
+    cloud_name="dmobley0608",
+    api_key="172351854381963",
+    api_secret="aHccAD-bj6FasCVv_m_xn2BSjxg"
 )
 
 db = SQLAlchemy(app)
 
 
-#Login Manager
+# Login Manager
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'admin'
 
+
 class Horse(db.Model):
-    __tablename__ ="horses"
+    __tablename__ = "horses"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     breed = db.Column(db.String, nullable=False)
@@ -51,9 +54,7 @@ class Horse(db.Model):
     saddle_time = db.Column(db.String, nullable=False)
     bio = db.Column(db.String, nullable=False)
     images = db.relationship('HorseImage', backref='horse_images', lazy=True)
-   
-    
-    
+
     def __repr__(self):
         return {
             "id": self.id,
@@ -68,37 +69,42 @@ class Horse(db.Model):
             "images": self.images
         }
 
-class HorseImage(db.Model):
-     __tablename__ = "horse_images"
-     id = db.Column(db.String, primary_key=True)
-     url = db.Column(db.String, nullable=False)
-     comment = db.Column(db.String)
-     horse_id = db.Column(db.Integer, db.ForeignKey('horses.id'), nullable=False)
 
-     def __repr__(self):
+class HorseImage(db.Model):
+    __tablename__ = "horse_images"
+    id = db.Column(db.String, primary_key=True)
+    url = db.Column(db.String, nullable=False)
+    comment = db.Column(db.String)
+    horse_id = db.Column(db.Integer, db.ForeignKey(
+        'horses.id'), nullable=False)
+
+    def __repr__(self):
         return{
             "image": self.url,
             "comment": self.comment
         }
 
+
 class User(db.Model, UserMixin):
-     __tablename__ = "users"
-     id = db.Column(db.Integer, primary_key=True)
-     email = db.Column(db.String, nullable=False)
-     password = db.Column(db.String, nullable=False)
-     
-     def __repr__(self):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+
+    def __repr__(self):
         return{
             "email": self.email,
             "password": self.password
         }
-     
+
 
 db.create_all()
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -109,7 +115,8 @@ def index():
 def contact_me():
     form = ContactForm()
     if form.validate_on_submit():
-        msg = Message("Please Help Message", sender="tim@tccs.tech", recipients=["tim@tccs.tech"])
+        msg = Message("Please Help Message", sender="tim@tccs.tech",
+                      recipients=["tim@tccs.tech"])
         msg.body = request.form["message"]
         mail.send(msg)
         return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
@@ -117,35 +124,38 @@ def contact_me():
 
 
 @app.route("/horses")
-def horses():        
+def horses():
     horses = db.session.query(Horse).all()
-    return render_template('horses.html', horses= horses)
+    return render_template('horses.html', horses=horses)
+
 
 @app.route("/horses/<id>/<name>")
 def horse(name, id):
     selected_horse = Horse.query.filter_by(id=int(id)).first()
-    horse_images = HorseImage.query.filter_by(horse_id = int(id)).all()     
-    return render_template('horse.html', horse=selected_horse, horse_images = horse_images)
+    horse_images = HorseImage.query.filter_by(horse_id=int(id)).all()
+    return render_template('horse.html', horse=selected_horse, horse_images=horse_images)
+
 
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
-    horses = Horse.query.all()  
+    horses = Horse.query.all()
     if request.method == "POST":
-        current_user = User.query.filter_by(email=request.form["email"]).first()
+        current_user = User.query.filter_by(
+            email=request.form["email"]).first()
         if current_user:
             if current_user.password == request.form["password"]:
                 login_user(current_user)
-                print("logged in") 
-            else:                
+                print("logged in")
+            else:
                 flash("Invalid Password")
         else:
-            flash("Not Today")           
-    return render_template('admin.html', horses= horses)
+            flash("Not Today")
+    return render_template('admin.html', horses=horses)
 
 
 @app.route("/get-horses", methods=["GET"])
 def get_horses():
-     return json.dumps(Horse.query.all())
+    return json.dumps(Horse.query.all())
 
 
 @app.route("/logout")
@@ -155,35 +165,44 @@ def logout():
     flash("Successfully Logged Out")
     return redirect(url_for('index'))
 
+
 @app.route('/add-horse', methods=["POST"])
 def add_horse():
     horse = Horse(name=request.form["name"], breed=request.form["breed"], sex=request.form["sex"], age=request.form["age"], price=request.form["price"], training=request.form["training"],
-    saddle_time=request.form["saddle_time"], bio=request.form["bio"], color=request.form["color"], height=request.form['height'])
+                  saddle_time=request.form["saddle_time"], bio=request.form["bio"], color=request.form["color"], height=request.form['height'])
     db.session.add(horse)
-    db.session.commit();
+    db.session.commit()
     return redirect(url_for('horses'))
 
-@app.route('/update-horse', methods=["GET","POST"])
-def update_horse():       
-    horse = Horse.query.filter_by(id=request.form["id"]).first()
-    horse.name=request.form["name"]
-    horse.breed=request.form["breed"]
-    horse.sex=request.form["sex"]
-    horse.age=request.form["age"]
-    horse.price=request.form["price"]
-    horse.training=request.form["training"]    
-    horse.saddle_time=request.form["saddle_time"]
-    horse.bio=request.form["bio"]
-    horse.color=request.form["color"]
-    horse.height=request.form['height']    
-    db.session.commit();
-    image = cloudinary.uploader.upload(request.files["images"], tag=horse.name)
-    print(image)
-    horse_image = HorseImage(id=image['public_id'], url=image["url"], horse_id=horse.id )
-    db.session.add(horse_image)
-    db.session.commit()   
+
+@app.route('/update-horse', methods=["GET", "POST"])
+def update_horse():
+    if current_user.is_authenticated:
+        horse = Horse.query.filter_by(id=request.form["id"]).first()
+        horse.name = request.form["name"]
+        horse.breed = request.form["breed"]
+        horse.sex = request.form["sex"]
+        horse.age = request.form["age"]
+        horse.price = request.form["price"]
+        horse.training = request.form["training"]
+        horse.saddle_time = request.form["saddle_time"]
+        horse.bio = request.form["bio"]
+        horse.color = request.form["color"]
+        horse.height = request.form['height']
+        db.session.commit()
+        files = request.files.getlist('images')
+        print(files)
+        for file in files: 
+            print(file)          
+            image = cloudinary.uploader.upload(file, tag=horse.name)           
+            horse_image = HorseImage(
+            id=image['public_id'], url=image["url"], horse_id=horse.id)
+            db.session.add(horse_image)
+            db.session.commit()
+    else:
+        flash("You gotta sign in!")
     return redirect(url_for('horse', id=horse.id, name=horse.name))
-        
+
 
 if __name__ == "__main__":
     app.run(debug=True)
