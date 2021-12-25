@@ -12,3 +12,4 @@ Flask-WTF==1.0.0
 SQLAlchemy==1.4.29
 Werkzeug==2.0.2
 WTForms==3.0.1
+cloudinary==1.28.0

@@ -1,12 +1,15 @@
 import os
 import json
+from typing import Collection
 from flask_sqlalchemy import SQLAlchemy
 import gunicorn
 import psycopg2
 from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_mail import Mail, Message
+from werkzeug.wrappers import response
 from forms.contact_form import ContactForm
 from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
+import cloudinary.uploader
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -19,6 +22,12 @@ app.config["MAIL_PORT"] = os.getenv('MAIL_PORT')
 app.config['MAIL_USE_SSL'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL_1",'sqlite:///static/data/horse.db')
 mail = Mail(app)
+
+cloudinary.config( 
+  cloud_name = "dmobley0608", 
+  api_key = "172351854381963", 
+  api_secret = "aHccAD-bj6FasCVv_m_xn2BSjxg" 
+)
 
 db = SQLAlchemy(app)
 
@@ -61,7 +70,7 @@ class Horse(db.Model):
 
 class HorseImage(db.Model):
      __tablename__ = "horse_images"
-     id = db.Column(db.Integer, primary_key=True)
+     id = db.Column(db.String, primary_key=True)
      url = db.Column(db.String, nullable=False)
      comment = db.Column(db.String)
      horse_id = db.Column(db.Integer, db.ForeignKey('horses.id'), nullable=False)
@@ -154,7 +163,7 @@ def add_horse():
     db.session.commit();
     return redirect(url_for('horses'))
 
-@app.route('/update-horse', methods=["POST"])
+@app.route('/update-horse', methods=["GET","POST"])
 def update_horse():       
     horse = Horse.query.filter_by(id=request.form["id"]).first()
     horse.name=request.form["name"]
@@ -168,6 +177,11 @@ def update_horse():
     horse.color=request.form["color"]
     horse.height=request.form['height']    
     db.session.commit();
+    image = cloudinary.uploader.upload(request.files["images"], tag=horse.name)
+    print(image)
+    horse_image = HorseImage(id=image['public_id'], url=image["url"], horse_id=horse.id )
+    db.session.add(horse_image)
+    db.session.commit()   
     return redirect(url_for('horse', id=horse.id, name=horse.name))
         
 
