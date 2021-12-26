@@ -184,7 +184,7 @@ def update_horse():
         horse.sex = request.form["sex"]
         horse.age = request.form["age"]
         horse.price = request.form["price"]
-        horse.training = request.form["training"]
+        horse.training = request.form["training"].strip()
         horse.saddle_time = request.form["saddle_time"]
         horse.bio = request.form["bio"]
         horse.color = request.form["color"]
@@ -193,12 +193,15 @@ def update_horse():
         files = request.files.getlist('images')
         print(files)
         for file in files: 
-            print(file)          
-            image = cloudinary.uploader.upload(file, tag=horse.name)           
-            horse_image = HorseImage(
-            id=image['public_id'], url=image["url"], horse_id=horse.id)
-            db.session.add(horse_image)
-            db.session.commit()
+            print(file) 
+            try:         
+                image = cloudinary.uploader.upload(file, tag=horse.name)           
+                horse_image = HorseImage(
+                id=image['public_id'], url=image["url"], horse_id=horse.id)
+                db.session.add(horse_image)
+                db.session.commit()
+            except cloudinary.exceptions.Error:
+                pass
     else:
         flash("You gotta sign in!")
     return redirect(url_for('horse', id=horse.id, name=horse.name))
