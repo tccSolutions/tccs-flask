@@ -10,13 +10,12 @@
         <h1>Welcome To The Barn</h1>
     </div>
     <div class="container d-flex flex-wrap justify-content-center">
-        {% for horse in horses%}
-
-        <div class="card shadow shadow-lg text-start pe-auto m-2 mb-5" style="width: 18rem;">
+        {% for horse in horses%}   
+           
             <button onclick="window.location.href='/horses/{{horse.id}}/{{horse.name}}'"
-                class="p-3 rounded shadow shadow-lg text-start" style="height: 100%;">
-                {%if horse.images%}
-                <img src={{horse.images[0]['url']}} class="card-img-top" alt="...">
+                class="card shadow shadow-lg mx-3 mt-2 mb-5 p-4 " style="width: 25%; height:30rem;">
+                {%if horse.images|count > 0 %}
+                <img src={{horse.images[0]["url"]}} class="card-img-top img-thumbnail mx-auto" width="auto" height="auto" alt="..." style="max-height: 50%; object-fit:cover">                       
                 {%endif%}
                 <div class="card-body">
                     <h5 class="card-title">Name: {{horse.name}}</h5>
@@ -25,9 +24,9 @@
                     <h6>Breed: {{horse.breed}}</h6>
                     <h6>Color: {{horse.color}}</h6>
                     <p class="card-text">About: {{horse.bio[:100]}}... Click To Read More</p>
-                </div>
+                </div>               
             </button>
-        </div>
+        
 
 
         {% endfor %}
