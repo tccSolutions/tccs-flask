@@ -1,256 +1,284 @@
-<!DOCTYPE html>
-<html lang="en">
-    {% extends 'index.html' %}
-    {%block title%}{{horse.name}}{%endblock%}
-    {%block head%}
-        {{ super() }}
-        <link rel="stylesheet" href="{{url_for('static', filename='styles/styles.css')}}">
-        <title>{{horse.name}}</title>
-    {% endblock%}
+{% extends 'index.html' %}
+{%block title%}{{horse.name}} @ {%endblock%}
+{%block head%}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static', filename='styles/styles.css')}}">
+{% if horse.images|count > 0 %}
+<link rel="icon" href="{{horse.images[0]['url']}}">
+{%else%}
+<link rel="icon" href="https://cdn.pixabay.com/photo/2017/01/31/23/50/bandy-legged-2028292_960_720.png">
+{% endif %}
 
-    
-      
-        {%block content%}
-    
-        <!-- Horse Modal -->
-        <div id="large_horse_modal" class="modal">
-            <div class="modal-dialog modal-dialog-centered ">
-                <div class="modal-body">
-                    <img id="big_image" src="" alt="horse image" class="rounded position-fixed top-50 start-50 translate-middle"
-                        width="1000em" />
+{% endblock%}
+
+
+
+{%block content%}
+
+<!-- Horse Modal -->
+<div id="large_horse_modal" class="modal">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-body">
+            <img id="big_image" src="" alt="horse image" class="rounded position-fixed top-50 start-50 translate-middle"
+                width="1000em" />
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div id="horse_info" class="d-flex  align-items-start">
+    <div class="">
+        <section id="left_bar" class="ms-5 mt-5 ">
+            {% if horse_images|count > 0 %}
+            {% set selected_photo = horse_images|random %}
+            <div>
+                <img src={{selected_photo["url"]}} class="img-thumbnail" width="150px" alt="..." />
+            </div>
+            {% endif %}
+            <div>
+                <h5>Name: {{horse.name}}</h5>
+                <h5>Sex: {{horse.sex}}</h5>
+                <h5>Breed: {{horse.breed}}</h5>
+                <h5>Color: {{horse.color}}</h5>
+                <h5>Height:{{horse.height}}</h5>
+                <h5>Age: {{horse.age}}</h5>
+                <h5>Asking Price:
+                    {%if horse.price > 1 %}
+                    ${{horse.price}}0
+                    {%else%}
+                    Not For Sale
+                    {%endif%}
+                </h5>
+                {%if current_user.is_authenticated%}
+                <button id="update_horse_btn" class="btn btn-info" data-bs-toggle="modal"
+                    data-bs-target="#form_modal">Update {{horse.name}}'s Info</button>
+                {% endif%}
+            </div>
+        </section>
+    </div>
+
+    <div class=" w-75 align-content-center">
+        <section id="about_horse" class="col">
+            <hr class="mx-auto mt-5 w-50"
+                style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
+            <div class="container mt-3 p-5">
+                <div class="text-center">
+                    <h3>About {{horse.name}}</h3>
+                </div>
+                <div class="w-75 mx-auto mt-4">
+                    <h5 class="lh-lg">{{horse.bio}}</h5>
                 </div>
             </div>
-        </div>
-    
-        <div id="horse_info" class="d-flex  align-items-start">
-            <div class="">
-                <section id="left_bar" class="ms-5 mt-5 ">
-                    {% if horse_images|count > 0 %}
-                    {% set selected_photo = horse_images|random %}
-                    <div>
-                        <img src={{selected_photo["url"]}} class="img-thumbnail" width="150px" alt="..." />
-                    </div>
-                    {% endif %}
-                    <div>
-                        <h5>Name: {{horse.name}}</h5>
-                        <h5>Sex: {{horse.sex}}</h5>
-                        <h5>Breed: {{horse.breed}}</h5>
-                        <h5>Color: {{horse.color}}</h5>
-                        <h5>Height:{{horse.height}}</h5>
-                        <h5>Age: {{horse.age}}</h5>
-                        <h5>Asking Price:
-                            {%if horse.price > 1 %}
-                            ${{horse.price}}0
-                            {%else%}
-                            Not For Sale
-                            {%endif%}
-                        </h5>
-                        {%if current_user.is_authenticated%}
-                        <button id="update_horse_btn" class="btn btn-info" data-bs-toggle="modal"
-                            data-bs-target="#form_modal">Update {{horse.name}}'s Info</button>
-                        {% endif%}
-                    </div>
-                </section>
+        </section>
+        <section id="training" class=" mt-3 mb-5 p-5">
+            <hr class="mx-auto mt-5 w-50"
+                style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
+            <div class="text-center">
+                <h3>Training</h3>
             </div>
-    
-            <div class=" w-75 align-content-center">
-                <section id="about_horse" class="col">
-                    <hr class="mx-auto mt-5 w-50"
-                        style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
-                    <div class="container mt-3 p-5">
-                        <div class="text-center">
-                            <h3>About {{horse.name}}</h3>
-                        </div>
-                        <div class="w-75 mx-auto mt-4">
-                            <h5 class="lh-lg">{{horse.bio}}</h5>
-                        </div>
-                    </div>
-                </section>
-                <section id="training" class=" mt-3 mb-5 p-5">
-                    <hr class="mx-auto mt-5 w-50"
-                        style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
-                    <div class="text-center">
-                        <h3>Training</h3>
-                    </div>
-                    <div class="w-50 mx-auto mt-4">
-                        <div class="text-center mb-4">
-                            <h5>Trainers: David Jones, Dwight Mobley</h5>
-                        </div>
-                        <div class="mx-auto text-start" style="width: 65%;">
-                            {% for line in horse.training.split("\n") %}
-                            {% if line != ""%}
-                            <li class="my-2">{{line}}</li>
-                            {%endif%}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </section>
-                <section id="gallery" class=" mt-3 mb-5 mx-auto">
-                    <hr class="mx-auto w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
-                    <div class="text-center">
-                        <h3>Gallery</h3>
-                    </div>
-                    <div class="d-flex flex-wrap w-75 mx-auto mt-4 justify-content-center">
-                        {%for image in horse_images%}
-                        <button class='card p-2 m-2 w-25 horse_btn' data-bs-toggle="modal" data-bs-target="#large_horse_modal">
-                            <img class='card-img-top' src={{image.url}} alt="horse image" />
-                            <p class='card-text'>{{image.comment}}</p>
-                        </button>
-                        {% endfor %}
-                    </div>
-                </section>
+            <div class="w-50 mx-auto mt-4">
+                <div class="text-center mb-4">
+                    <h5>Trainers: David Jones, Dwight Mobley</h5>
+                </div>
+                <div class="mx-auto text-start" style="width: 65%;">
+                    {% for line in horse.training.split("\n") %}
+                    {% if line != ""%}
+                    <li class="my-2">{{line}}</li>
+                    {%endif%}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-    
-    
-    
-    
-    
-    
-    
-        <!-- FORM TO UPDATE HORSE -->
-        <div class="modal fade" id="form_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">{{horse.name}}'s Information</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </section>
+        <section id="gallery" class=" mt-3 mb-5 mx-auto">
+            <hr class="mx-auto w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
+            <div class="text-center">
+                <h3>Gallery</h3>
+            </div>
+            <div class="d-flex flex-wrap w-75 mx-auto mt-4 justify-content-center">
+                {%for image in horse_images%}
+                <div class='card p-2 m-2 w-25' data-bs-toggle="modal" data-bs-target="#large_horse_modal">
+                    <button class='btn horse_btn'>
+                        <img class='card-img-top' src={{image.url}} alt="horse image" />
+                        <p class='card-text'>{{image.comment}}</p>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- FORM TO UPDATE HORSE -->
+<div class="modal fade" id="form_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">{{horse.name}}'s Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" id="update_horse_form" class='align-items-center'
+                    action="{{url_for('update_horse')}}" method="POST">
+
+                    <!-- Hidden Id for DB Ref -->
+                    <input type="hidden" name="id" value={{horse.id}}>
+
+                    <!-- First Row Name, Breed -->
+                    <div class="row  mb-3">
+                        <!-- Name -->
+                        <div class="form-floating mb-3 col">
+                            <input name="name"" type=" text" class="form-control" id="update_name"
+                                value="{{horse.name}}">
+                            <label for="name">Name</label>
+                        </div>
+                        <!-- Breed -->
+                        <div class="form-floating mb-3 col">
+                            <input name="breed" type="text" class="form-control" id="update_breed"
+                                value="{{horse.breed}}">
+                            <label for="breed">Breed</label>
+                        </div>
+
+                        <!-- Age -->
+                        <div class="form-floating mb-3 col">
+                            <input name="age"" type=" number" class="form-control" id="update_age" value={{horse.age}}>
+                            <label for="age">Age</label>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <form enctype="multipart/form-data" id="update_horse_form" class='align-items-center' action="{{url_for('update_horse')}}" method="POST" >
 
-                            <!-- Hidden Id for DB Ref -->
-                            <input type="hidden" name="id" value={{horse.id}}>
+                    <!-- Second Row Color, Sex, Height -->
+                    <div class="row  mb-3">
+                        <!-- Color -->
+                        <div class="form-floating mb-3 col">
+                            <input name="color"" type=" text" class="form-control" id="update_color"
+                                value="{{horse.color}}">
+                            <label for="color">Color</label>
+                        </div>
+                        <!-- Sex -->
+                        <div class="form-floating mb-3 col">
+                            <input name="sex"" type=" text" class="form-control" id="update_sex" value="{{horse.sex}}">
+                            <label for="sex">Sex</label>
+                        </div>
+                        <!-- Height -->
+                        <div class="form-floating mb-3 col">
+                            <input name="height"" type=" float" class="form-control" id="update_height"
+                                value={{horse.height}}>
+                            <label for="height">Height</label>
+                        </div>
+                    </div>
 
-                            <!-- First Row Name, Breed -->
-                            <div class="row  mb-3">
-                                <!-- Name -->
-                                <div class="form-floating mb-3 col">
-                                    <input name="name"" type="text" class="form-control" id="update_name" value="{{horse.name}}">
-                                    <label for="name">Name</label>
-                                </div>
-                                <!-- Breed -->
-                                <div class="form-floating mb-3 col">
-                                    <input name="breed" type="text" class="form-control" id="update_breed" value="{{horse.breed}}">
-                                    <label for="breed">Breed</label>
-                                </div>
-
-                                <!-- Age -->
-                                <div class="form-floating mb-3 col">
-                                    <input name="age"" type=" number" class="form-control" id="update_age" value={{horse.age}}>
-                                    <label for="age">Age</label>
-                                </div>
-                            </div>
-
-                                <!-- Second Row Color, Sex, Height -->                                
-                                <div class="row  mb-3">
-                                    <!-- Color -->
-                                    <div class="form-floating mb-3 col">
-                                        <input name="color"" type=" text" class="form-control" id="update_color" value="{{horse.color}}">
-                                        <label for="color">Color</label>
-                                    </div>
-                                    <!-- Sex -->
-                                    <div class="form-floating mb-3 col">
-                                        <input name="sex"" type=" text" class="form-control" id="update_sex" value="{{horse.sex}}">
-                                        <label for="sex">Sex</label>
-                                    </div>
-                                    <!-- Height -->
-                                    <div class="form-floating mb-3 col">
-                                        <input name="height"" type=" float" class="form-control" id="update_height" value={{horse.height}}>
-                                        <label for="height">Height</label>
-                                    </div>    
-                                </div>
-
-                                <!-- Third Row Saddle_Time, Price -->
-                                <div class="row">
-                                    <!-- Saddle_Time -->
-                                    <div class="form-floating mb-3  col">
-                                        <input name="saddle_time"" type=" text" class="form-control" id="update_saddle_time" value="{{horse.saddle_time}}">
-                                        <label for="saddle_time">Saddle Time</label>
-                                    </div>
-                                    <!-- Price -->
-                                    <div class="form-floating mb-3 col">
-                                        <input name="price"" type=" float" class="form-control" id="update_price" value={{horse.price}}>
-                                        <label for="price">Price</label>
-                                    </div>
-                                </div>
-                                <!-- Training -->
-                                <div class="row mb-5">
-                                    <div class="form-floating mb-3 col">
-                                        <h6 >Enter Training Accomplishments. Each new line is a Bullet</h6>
-                                        <textarea name="training" class="form-control" rows="10" style="height: 100%;" id="update_training">
+                    <!-- Third Row Saddle_Time, Price -->
+                    <div class="row">
+                        <!-- Saddle_Time -->
+                        <div class="form-floating mb-3  col">
+                            <input name="saddle_time"" type=" text" class="form-control" id="update_saddle_time"
+                                value="{{horse.saddle_time}}">
+                            <label for="saddle_time">Saddle Time</label>
+                        </div>
+                        <!-- Price -->
+                        <div class="form-floating mb-3 col">
+                            <input name="price"" type=" float" class="form-control" id="update_price"
+                                value={{horse.price}}>
+                            <label for="price">Price</label>
+                        </div>
+                    </div>
+                    <!-- Training -->
+                    <div class="row mb-5">
+                        <div class="form-floating mb-3 col">
+                            <h6>Enter Training Accomplishments. Each new line is a Bullet</h6>
+                            <textarea name="training" class="form-control" rows="10" style="height: 100%;"
+                                id="update_training">
                                             {{horse.training}}
-                                        </textarea>                                      
-                                    </div>
-                                </div>
-                                <!-- About Horse -->
-                                <div class="row mb-5">
-                                    <div class="form-floating mb-5">
-                                        <h6 >Enter Bio</h6>
-                                        <textarea name="bio" class="form-control" rows="10" style="height: 100%;" id="update_bio">
-                                            {{horse.bio}}
-                                        </textarea>                                        
-                                    </div>        
-                                </div>
-                                <!--Upload Images -->
-                                <div class="form-floating mb-3">
-                                    <h6 >Upload Media</h6>
-                                    <input name="images" type="file" class="form-control" multiple>                                    
-                                </div>
-                                <!-- Current Imaged -->
-                                <div class="row mb-3">
-                                    <h6 >Current Media</h6>
-                                    {%for image in horse_images%}
-                                    <div class='card p-2 m-2 border border-dark w-25 col '>
-                                        <img class='card-img-top' src={{image.url}} alt="horse image" />
-                                        <label for="img_comment">Enter Comment</label>
-                                        <input name="img_comment" class='form-control' value="{{image.comment}}" </div>                            
-                                    </div>                                 
-                                    {%endfor%}
-                                </div>
-                                <!-- Form Buttons -->
-                                <div class='d-flex w-50 mx-auto'>                                                               
-                                        <button type="submit" class="btn btn-primary ms-auto mx-2 w-50">Update</button>                                
-                                        <button type="button" class="btn btn-secondary ms-auto w-50"  data-bs-dismiss="modal">Cancel</button>                                      
-                                </div>
-                        </form>
-
+                                        </textarea>
+                        </div>
                     </div>
-                </div>
+                    <!-- About Horse -->
+                    <div class="row mb-5">
+                        <div class="form-floating mb-5">
+                            <h6>Enter Bio</h6>
+                            <textarea name="bio" class="form-control" rows="10" style="height: 100%;" id="update_bio">
+                                            {{horse.bio}}
+                                        </textarea>
+                        </div>
+                    </div>
+                    <!--Upload Images -->
+                    <div id="image_upload_container" class="form-floating mb-3">
+                        <button id='add_image_btn' type='button' class='btn btn-info float-end mb-2'>Add Another
+                            Image</button>
+                        <div class='upload_image' class='mb-3'>
+                            <input name="images" type="file" class="form-control">
+                            <div class='form-floating'>
+                                <input name="comment" class="form-control mb-3">
+                                <label for="comment">Enter Comment</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Current Images -->
+                    <section id="current_images">
+                        <h6>Current Media</h6>
+                        <div class="d-flex flex-wrap">
+                            {%for image in horse_images%}
+                            <div class='card p-2 m-2 border border-dark w-25 mx-auto'>
+                                <img class='card-img-top' src={{image.url}} alt="horse image" />
+                                <label for="img_comment">Enter Comment</label>
+                                <input name="img_comment" class='form-control' value="{{image.comment}}" </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+
+                    </section>
+                    <!-- Form Buttons -->
+                    <div class='d-flex w-50 mx-auto'>
+                        <button id="progress" class="btn btn-primary w-100" type="button" disabled
+                            style="visibility: hidden;">
+                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                            Updating Info...
+                        </button>
+                        <button id='submit_btn' type="submit" class="btn btn-primary ms-auto mx-2 w-50">Update</button>
+                        <button id="cancel_btn" type="button" class="btn btn-secondary ms-auto w-50 "
+                            data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+
             </div>
         </div>
-    
-    
-        <script>
-            let update_horse_btn = document.getElementById('update_horse_btn')
-            let cancel_button = document.getElementsByClassName("cancel_btn")[0]
-            let horse_info = document.getElementById("horse_info")
-    
-    
-            cancel_button.onclick = function () {
-                update_horse_form.style.visibility = 'hidden'
-                horse_info.style.visibility = "visible"
-    
-    
-                document.body.scrollTop = 0; // For Safari
-                document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-            }
-    
-            horse_btns = document.getElementsByClassName("horse_btn")
-            Array.from(horse_btns).forEach(function (button) {
-                button.onclick = function (event) {
-                    console.log(event.target)
-                    document.getElementById("big_image").src = event.target.src
-                }
-            })
-        </script>
-    
-        {%endblock%}
-    
-    
-    
-   
-   
-    
+    </div>
+</div>
 
-</html>
+
+<script>
+    let update_horse_btn = document.getElementById('update_horse_btn');
+    let cancel_button = document.getElementById("cancel_btn");
+    let horse_info = document.getElementById("horse_info");
+    let add_image_btn = document.getElementById('add_image_btn');
+    let horse_btns = document.getElementsByClassName("horse_btn");
+    let submit_btn = document.getElementById("submit_btn")
+
+    submit_btn.onclick = function (event) {
+        document.getElementById("progress").style.visibility = "visible";
+        submit_btn.style.visibility = "hidden";
+        cancel_button.style.visibility = "hidden";
+    }
+
+    Array.from(horse_btns).forEach(function (btn) {
+        btn.onclick = function (event) {
+            console.log(event.target)
+            document.getElementById("big_image").src = event.target.src
+        }
+    })
+
+    cancel_button.onclick = function () {
+        update_horse_form.style.visibility = 'hidden'
+        horse_info.style.visibility = "visible"
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+
+
+    add_image_btn.onclick = function () {
+        upload_input = document.getElementsByClassName("upload_image")[0].cloneNode(true);
+        document.getElementById("image_upload_container").appendChild(upload_input)
+    }
+</script>
+
+{%endblock%}

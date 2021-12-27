@@ -191,13 +191,14 @@ def update_horse():
         horse.height = request.form['height']
         db.session.commit()
         files = request.files.getlist('images')
+        comments = request.form.getlist("comment")
         print(files)
         for file in files: 
             print(file) 
             try:         
                 image = cloudinary.uploader.upload(file, tag=horse.name)           
                 horse_image = HorseImage(
-                id=image['public_id'], url=image["url"], horse_id=horse.id)
+                id=image['public_id'], url=image["url"], comment=comments[files.index(file)], horse_id=horse.id)
                 db.session.add(horse_image)
                 db.session.commit()
             except cloudinary.exceptions.Error:
