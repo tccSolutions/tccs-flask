@@ -15,7 +15,7 @@ import cloudinary.uploader
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "os.getenv('SECRET_KEY')"
+app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 app.config["MAIL_SERVER"] = os.getenv('MAIL_SERVER')
 app.config["MAIL_USERNAME"] = os.getenv('MAIL_USERNAME')
 app.config["MAIL_PASSWORD"] = os.getenv('MAIL_PASSWORD')
@@ -25,21 +25,20 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL_1", 'sqlite:///static/data/horse.db')
 mail = Mail(app)
 
+#image cloud storage
 cloudinary.config(
-    cloud_name="dmobley0608",
-    api_key="172351854381963",
-    api_secret="aHccAD-bj6FasCVv_m_xn2BSjxg"
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('CLOUD_KEY'),
+    api_secret=os.getenv('CLOUD_SECRET')
 )
+
+#database
 
 db = SQLAlchemy(app)
 
 
-# Login Manager
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'admin'
 
-
+#Database Models
 class Horse(db.Model):
     __tablename__ = "horses"
     id = db.Column(db.Integer, primary_key=True)
@@ -100,42 +99,24 @@ class User(db.Model, UserMixin):
 
 db.create_all()
 
+# Login Manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'admin'
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
 
 
+# Routes
+
+#Home
 @app.route("/", methods=["GET", "POST"])
 def index():
     return render_template('index.html')
 
-
-@app.route("/contact_me", methods=['GET', 'POST'])
-def contact_me():
-    form = ContactForm()
-    if form.validate_on_submit():
-        msg = Message("Please Help Message", sender="tim@tccs.tech",
-                      recipients=["tim@tccs.tech"])
-        msg.body = request.form["message"]
-        mail.send(msg)
-        return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
-    return render_template('/contact_page/contact.html', form=form)
-
-
-@app.route("/horses")
-def horses():
-    horses = db.session.query(Horse).all()
-    return render_template('horses.html', horses=horses)
-
-
-@app.route("/horses/<id>/<name>")
-def horse(name, id):
-    selected_horse = Horse.query.filter_by(id=int(id)).first()
-    horse_images = HorseImage.query.filter_by(horse_id=int(id)).all()
-    return render_template('horse.html', horse=selected_horse, horse_images=horse_images)
-
-
+#admin login and sign out
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
     horses = Horse.query.all()
@@ -152,18 +133,39 @@ def admin_login():
             flash("Not Today")
     return render_template('admin.html', horses=horses)
 
-
-@app.route("/get-horses", methods=["GET"])
-def get_horses():
-    return json.dumps(Horse.query.all())
-
-
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
     flash("Successfully Logged Out")
     return redirect(url_for('index'))
+
+
+#contact me
+@app.route("/contact_me", methods=['GET', 'POST'])
+def contact_me():
+    form = ContactForm()
+    if form.validate_on_submit():
+        msg = Message("Please Help Message", sender="tim@tccs.tech",
+                      recipients=["tim@tccs.tech"])
+        msg.body = request.form["message"]
+        mail.send(msg)
+        return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
+    return render_template('/contact_page/contact.html', form=form)
+
+
+#horse routes
+@app.route("/horses")
+def horses():
+    horses = db.session.query(Horse).all()
+    return render_template('horses.html', horses=horses)
+
+
+@app.route("/horses/<id>/<name>")
+def horse(name, id):
+    selected_horse = Horse.query.filter_by(id=int(id)).first()
+    horse_images = HorseImage.query.filter_by(horse_id=int(id)).all()
+    return render_template('horse.html', horse=selected_horse, horse_images=horse_images)
 
 
 @app.route('/add-horse', methods=["POST"])
@@ -206,6 +208,8 @@ def update_horse():
     else:
         flash("You gotta sign in!")
     return redirect(url_for('horse', id=horse.id, name=horse.name))
+
+
 
 
 if __name__ == "__main__":
