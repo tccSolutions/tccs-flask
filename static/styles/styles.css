@@ -80,7 +80,7 @@ nav{
     text-decoration: none;
   }
   
-  .btn:hover {
+  .contact-me .btn:hover {
     background: #30e3cb;
     background-image: -webkit-linear-gradient(top, #30e3cb, #2bc4ad);
     background-image: -moz-linear-gradient(top, #30e3cb, #2bc4ad);
@@ -168,4 +168,10 @@ footer{
     margin-top: 15%;
     align-items: start;
     text-align: left;
+}
+
+@media only screen and (max-width: 600px){
+  nav a {
+    margin-left:2em;
+  }
 }
