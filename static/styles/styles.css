@@ -22,6 +22,11 @@ nav{
     box-shadow: 5px 5px 10px black;
 }
 
+li{
+  list-style: none;
+}
+
+
 .header {
     display: inline-block;
     background-image: linear-gradient(#f1f1f1, #018d9c);
@@ -194,8 +199,8 @@ footer{
   border-radius: 8px;
   font-family: "Merriweather Sans", sans-serif;
   color: #ffffff;
-  font-size: .5em;
-  padding: 5px 20px 5px 20px;
+  font-size: .75em;
+  padding:2px 20px 2px 20px;
   text-decoration: none;
 }
 

@@ -129,16 +129,16 @@ def admin_login():
                 login_user(current_user)
                 print("logged in")
             else:
-                flash("Invalid Password")
+                flash("Invalid Password", "error")
         else:
-            flash("Not Today")
+            flash("Not Today", "error")
     return render_template('admin.html', horses=horses)
 
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    flash("Successfully Logged Out")
+    flash("Successfully Logged Out", "info")
     return redirect(url_for('index'))
 
 
@@ -158,7 +158,7 @@ def contact_me():
 @app.route('/workshop')
 def workshop():
     message = "this page is in the process of being updated. Thank you for your patience!"
-    flash(message.title())
+    flash(message.title(), "info")
     return render_template('workshop.html')
 
 
@@ -214,7 +214,7 @@ def update_horse():
             except cloudinary.exceptions.Error:
                 pass
     else:
-        flash("You gotta sign in!")
+        flash("You gotta sign in!", "info")
     return redirect(url_for('horse', id=horse.id, name=horse.name))
 
 

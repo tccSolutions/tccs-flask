@@ -1,11 +1,83 @@
 {% extends 'index.html' %}
 {% block title%}The Workshop{%endblock%}
 {%block head%}
-    {{super()}}
+{{super()}}
+<link rel="stylesheet" href="../static/styles/workshop.styles.css">
 {%endblock%}
 
 {%block content%}
-{% include 'tim.html'%}
+<!-- Header -->
+<section class="header">
+    <h1>The Workshop</h1>
+    <div class='mountain-cloud-container'>
+        <img class="cloud-1" alt="clouds" src="../static/images/cloud.png" />
+        <img class='mountain' alt="mountain" src="../static/images/mountain.png" />
+    </div>
+</section>
 
+<!--My Background -->
+<section id='my-background' class='container mt-5'>
+    <div>
+        <h3>A Little Bit About Me</h3>
+    </div>
+    <div class="w-75 mx-auto text-start ">
+        <h6 class='lh-base'>I started building and repairing computers for my family around the age of 12. I quickly
+            learned that computers were something of a specialty for me.
+            As I progressed through school, I became more and more fascinated with technology. While in high school, I
+            joined the Army National Guard, as a 19D Cavalry Scout
+            <span><img src="../static//images/sabers.png" alt="sabers" width="25px"></span>, HOOAH!
+            As a Scout, I was responsible for maintaining my team's radios, sat phones, laptops, and tons of other tech.
+            Shortly, after graduating, I found myself working
+            for Animal Control. This reinforced my passion for animals. While working with Animal Control, I continued
+            to repair computers on the side, and started to dabble in
+            programming and web development. Soon, friends and clients started to push me to get a degree in a Tech
+            Field. After much encouragment, I decided to go and I obtained my
+            Bachelor's Degree in Computer Information Systems. Now I work as a freelance developer. I have listed a few
+            projects below and the link to the git repo.
+        </h6>
+    </div>
+</section>
+
+<!-- Web Development -->
+<section id="web-dev" class="container mt-5">
+    <div class="mb-5">
+        <h3>Web Development</h3>
+    </div>
+    <!-- Flask -->
+    <div class='d-flex mb-5 mt-5'>
+        <div class="skill-img">
+            <a href=" https://flask.palletsprojects.com/en/2.0.x/" target="_blank">
+                <img src="https://flask.palletsprojects.com/en/2.0.x/_images/flask-logo.png" style="max-width: 300px;">
+            </a>
+        </div>
+        <div class='ms-4'>
+            <h6>The following sites have been developed using the FLASK Framework:</h6>
+            <ul class='text-start mx-auto w-50'>
+                <li><a href=" https://starfire-registry.herokuapp.com/" target="_blank">Starfire Registry</a></li>
+                <li><a href=" https://www.taylor-and-dwight.com/" target="_blank">Taylor-and-Dwight.com</a></li>
+                <li><a href=" https://www.taylor-and-dwight.com/" target="_blank">TCCS.TECH</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- REACT -->
+    <div class='d-flex mb-5 justify-content-end '>       
+        <div class='w-50  me-0 '>
+            <h6>The following sites have been developed using the REACT Framework:</h6>
+            <ul class='text-start mx-auto w-50'>
+                <li><a href=" https://tccsolutions.github.io/crwn-clothing/" target="_blank">Crown Clothing</a></li>
+                <li><a href=" https://tccsolutions.github.io/wildoaksfarm/" target="_blank">Wild Oaks Farm</a></li>
+                <li><a href=" https://tccsolutions.github.io/tccs/" target="_blank">TCCS.TECH</a></li>
+            </ul>
+        </div>
+        <div class="skill-img">
+            <a href=" https://flask.palletsprojects.com/en/2.0.x/" target="_blank">
+                <img src="https://onextrapixel.com/wp-content/uploads/2016/04/reactjs-thumb.jpg" class="" style="max-width: 300px;">
+            </a>
+        </div>
+    </div>
+
+
+</section>
 
 {%endblock%}

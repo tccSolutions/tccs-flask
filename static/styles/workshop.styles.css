@@ -1,0 +1,8 @@
+.skill-img:nth-child(odd){
+    width:30%;
+    border-right: 2px solid black;   
+}
+.skill-img:nth-child(even){
+    width:30%;
+    border-left: 2px solid black;   
+}
