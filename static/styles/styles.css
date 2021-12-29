@@ -1,6 +1,18 @@
-body{text-align: center;
+html{
+  min-width: 100vh;
+}
+body{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh !important;
+  text-align: center;
   font-family: "Merriweather Sans", sans-serif !important;
   color:#40514e;
+}
+.content{
+  display:flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 a{
@@ -151,7 +163,7 @@ nav{
 }
 
 footer{
-    position: fixed;
+    margin-top: auto;
     bottom:0;
     width:100%;
     height: 2.5rem;
@@ -168,6 +180,33 @@ footer{
     margin-top: 15%;
     align-items: start;
     text-align: left;
+}
+
+#skills .btn {
+  background: #11cdd4;
+  background-image: -webkit-linear-gradient(top, #11cdd4, #11999e);
+  background-image: -moz-linear-gradient(top, #11cdd4, #11999e);
+  background-image: -ms-linear-gradient(top, #11cdd4, #11999e);
+  background-image: -o-linear-gradient(top, #11cdd4, #11999e);
+  background-image: linear-gradient(to bottom, #11cdd4, #11999e);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  font-family: "Merriweather Sans", sans-serif;
+  color: #ffffff;
+  font-size: .5em;
+  padding: 5px 20px 5px 20px;
+  text-decoration: none;
+}
+
+#skills .btn:hover {
+  background: #30e3cb;
+  background-image: -webkit-linear-gradient(top, #30e3cb, #2bc4ad);
+  background-image: -moz-linear-gradient(top, #30e3cb, #2bc4ad);
+  background-image: -ms-linear-gradient(top, #30e3cb, #2bc4ad);
+  background-image: -o-linear-gradient(top, #30e3cb, #2bc4ad);
+  background-image: linear-gradient(to bottom, #30e3cb, #2bc4ad);
+  text-decoration: none;
 }
 
 @media only screen and (max-width: 600px){

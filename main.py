@@ -1,6 +1,7 @@
 import os
 import json
 from typing import Collection
+import flask
 from flask_sqlalchemy import SQLAlchemy
 import gunicorn
 import psycopg2
@@ -152,6 +153,13 @@ def contact_me():
         mail.send(msg)
         return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
     return render_template('/contact_page/contact.html', form=form)
+
+#Tech Route
+@app.route('/workshop')
+def workshop():
+    message = "this page is in the process of being updated. Thank you for your patience!"
+    flash(message.title())
+    return render_template('workshop.html')
 
 
 #horse routes
