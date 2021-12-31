@@ -13,6 +13,7 @@ from forms.contact_form import ContactForm
 from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
 import cloudinary.uploader
 
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)

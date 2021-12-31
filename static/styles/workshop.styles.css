@@ -1,15 +1,6 @@
 .skill-img{
-    width: 20rem;
+    width: 25%;
 }
-
-.skill-img:nth-child(odd){   
-    border-right: 2px solid black;   
-}
-
-.skill-img:nth-child(even){   
-    border-left: 2px solid black;   
-}
-
 .skill-img img{
     object-fit: contain;
 }
