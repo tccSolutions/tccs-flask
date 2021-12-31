@@ -14,12 +14,17 @@ body{
   flex-direction: column;
   flex-grow: 1;
 }
+.alert{
+  z-index: 12;
+}
 
 a{
   text-decoration: none !important;
 }
 nav{
     box-shadow: 5px 5px 10px black;
+    border-bottom: 1px solid black;
+    background-color: #11cdd4;
 }
 
 li{
@@ -29,39 +34,56 @@ li{
 
 .header {
     display: inline-block;
-    background-image: linear-gradient(#f1f1f1, #018d9c);
+    position: relative;
+    background-image: linear-gradient(9deg,#f1f1f1, #018d9c);
     padding-top: 6em;
     width: 100%;
+    height:15rem;
     text-align: center;
+    overflow: hidden;
   }
 .header h1 {
   margin-top: 0;
   font-family: "Sacramento", cursive;
-  font-size: 5em;
+  font-size: 4em;
 }
 .header p {
   margin: 0 auto;
-  font-size: 1.5em;
+  font-size: 1em;
 }
 
 
-.mountain-cloud-container {
-  margin: 0 auto;
-  width: 45%;
+.sun-cloud-container {
+ margin: 0 auto;
+  width: 35%;
+  
 }
-.mountain {
-  margin: 0 auto;
-}
+
 .cloud {
-  position: relative;
-  bottom: 8em;
-  right: 8em;
+  position:relative;  
+  top: -10em;
+  left:-30rem;
+  width: 15em; 
 }
-.cloud-1 {
-  position: relative;
-  top: 7em;
-  left: 7em;
+.cloud:nth-child(odd) {  
+  top: -20em;
+  left:30rem;
+  width: 15em; 
 }
+.sun{ 
+  margin:0 auto;
+  width: 21rem; 
+  height: 21rem;
+  border-radius: 50%;
+  padding:2rem;
+  background-image: linear-gradient( rgb(250, 149, 34),yellow);
+  box-shadow: 0 0 5rem gold;
+}
+
+
+
+
+
 
 .bio-container{
     width:40%;

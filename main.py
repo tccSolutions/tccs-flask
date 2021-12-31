@@ -52,6 +52,7 @@ class Horse(db.Model):
     price = db.Column(db.Float)
     training = db.Column(db.String, nullable=False)
     saddle_time = db.Column(db.String, nullable=False)
+    adoptable = db.Column(db.Boolean, nullable=False)
     bio = db.Column(db.String, nullable=False)
     images = db.relationship('HorseImage', backref='horse_images', lazy=True)
 
@@ -199,6 +200,7 @@ def update_horse():
         horse.bio = request.form["bio"]
         horse.color = request.form["color"]
         horse.height = request.form['height']
+        horse.adoptable = int(request.form['adoptable'])
         db.session.commit()
         files = request.files.getlist('images')
         comments = request.form.getlist("comment")

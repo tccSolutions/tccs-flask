@@ -181,6 +181,18 @@
                                 value={{horse.price}}>
                             <label for="price">Price</label>
                         </div>
+                        <div class="form-floating mb-3 col">
+                            <select name="adoptable"" type="bool" class="form-control" id="update_adoptable">
+                                {%if horse.adoptable == True%}
+                                <option value=1 selected>Adoptable</option>
+                                <option value=0>Not Adoptable</option>
+                                {%else%}
+                                <option value=1>Adoptable</option>
+                                <option value=0 selected>Not Adoptable</option>
+                                {%endif%}
+                                </select>
+                            <label for="adoptable">Price</label>
+                        </div>
                     </div>
                     <!-- Training -->
                     <div class="row mb-5">
