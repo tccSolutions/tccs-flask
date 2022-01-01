@@ -158,9 +158,7 @@ def contact_me():
 
 #Tech Route
 @app.route('/workshop')
-def workshop():
-    message = "this page is in the process of being updated. Thank you for your patience!"
-    flash(message.title(), "info")
+def workshop():   
     return render_template('workshop.html')
 
 
