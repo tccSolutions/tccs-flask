@@ -1,3 +1,13 @@
+.project-container{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.project{
+    width:40em;
+    margin-top: 2em;
+}
 .skill-img{
     width: 25%;
 }
@@ -21,3 +31,12 @@
      transform: scale(1.25);     
  }
 
+ .col{
+     min-width: 650px;
+ }
+
+ @media only screen and (max-width:600px){
+    .col{
+        min-width:75%;
+     }
+ }

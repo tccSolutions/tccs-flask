@@ -1,6 +1,4 @@
-html{
-  min-width: 100vh;
-}
+
 body{
   display: flex;
   flex-direction: column;
