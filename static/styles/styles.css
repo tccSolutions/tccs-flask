@@ -186,6 +186,10 @@ footer{
     text-align: left;
 }
 
+#skills{
+  width: 100%;
+}
+
 #skills .btn {
   background: #11cdd4;
   background-image: -webkit-linear-gradient(top, #11cdd4, #11999e);
