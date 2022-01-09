@@ -10,7 +10,7 @@ body{
 .content{
   display:flex;
   flex-direction: column;
-  flex-grow: 1;
+  
 }
 .alert{
   z-index: 12;
@@ -148,23 +148,14 @@ li{
   z-index: -1;
 }
 
-.contact-form{
-    display: flex;
-    flex-direction: column;
-    width:30%;
-    margin:5em auto 0 3em;
-    background-image: linear-gradient(#009dae88,#c2fff970);
-    padding:2em 5em;
-    border-radius: .25em;
-    box-shadow: 15px 15px 10px #000000;
-}
 
-.contact-form input, textarea{
+
+input, textarea{
    margin: .5em;
     padding: 1.25em;
     border-radius: .25em;
     border: none;
-     box-shadow: 5px 5px 10px #000000;
+    box-shadow: 5px 5px 10px #000000;
 }
 
 footer{ 
