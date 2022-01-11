@@ -1,31 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Contact Me</title>
-</head>
-<body style='background-image: linear-gradient(9deg,#f1f1f1, #018d9c);'>   
-    {% extends 'index.html' %}
-   {%block content%}
-   <section class='mt-2' style='font-family:"Sacramento", cursive; '>
-       <h1 style="font-size: 3em;">Leave a Message</h1>
-   </section>
-   <div class='container-fluid row justify-content-center'>
+{% extends 'index.html' %}
+{%block title%}Contact Me @ {%endblock%}
+{%block head%}
+<link rel="stylesheet" href="../static/styles/contact.styles.css" />
+{%endblock%}
+
+
+{%block content%}
+
+<section class='mt-2' style='font-family:"Sacramento", cursive; '>
+    <h1 style="font-size: 3em;">Leave a Message</h1>
+</section>
+<div class='container-fluid row justify-content-center'>
     <form class="row col-md-6 justify-content-center " action="{{url_for('contact_me')}}" method="POST">
         {{form.csrf_token}}
-   
-        {{form.name(placeholder="Please enter your name.")}}
-   
-        {{form.email(placeholder="Please enter your email.")}}
-    
-        {{form.message(placeholder="Please enter your message.", rows=10)}}
-    
-        <input class='btn btn-success'  type="submit" value="Send"/>       
-</form>
-   </div>
-   
-    
 
+        {{form.name(placeholder="Please enter your name.")}}
+
+        {{form.email(placeholder="Please enter your email.")}}
+
+        {{form.message(placeholder="Please enter your message.", rows=10)}}
+
+        <input class='btn btn-success' type="submit" value="Send" />
+    </form>
+</div>
+
+
+</div>
 {%endblock%}
-</body>
+
 </html>
