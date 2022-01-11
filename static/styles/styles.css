@@ -60,10 +60,11 @@ li{
 
 .cloud {
   position:relative;  
-  top: -10em;
-  left:-30rem;
+  bottom:35% ;
+  right:120%;
   width: 15em; 
 }
+
 .cloud:nth-child(odd) {  
   top: -20em;
   left:30rem;
@@ -78,8 +79,6 @@ li{
   background-image: linear-gradient( rgb(250, 149, 34),yellow);
   box-shadow: 0 0 5rem gold;
 }
-
-
 
 
 
@@ -211,6 +210,18 @@ footer{
 
 @media only screen and (max-width: 600px){
   nav a {
+   
     margin-left:2em;
+  }
+
+  .cloud{
+    top:-15em;
+    width:10em;
+    left:-8em;
+  }
+  .cloud:nth-child(odd){
+    top:-15em;
+    width:5em;
+    left:5em;
   }
 }
