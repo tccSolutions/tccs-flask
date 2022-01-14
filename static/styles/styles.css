@@ -47,8 +47,9 @@ li{
   font-size: 4em;
 }
 .header p {
-  margin: 0 auto;
+  margin: -1.5em auto;
   font-size: 1em;
+  
 }
 
 
@@ -214,12 +215,12 @@ footer{
   }
 
   .cloud{
-    top:-15em;
+    top:-11em;
     width:10em;
     left:-8em;
   }
   .cloud:nth-child(odd){
-    top:-15em;
+    top:-10em;
     width:5em;
     left:5em;
   }
