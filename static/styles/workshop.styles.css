@@ -10,10 +10,11 @@
     margin-bottom: 5em;
 }
 .skill-img{
-    width: 25%;
+    max-width: 10em;
 }
 .skill-img img{
     object-fit: contain;
+    max-width: 10em;
 }
 
 #web-dev li{   

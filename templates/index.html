@@ -45,7 +45,7 @@
           <li class="nav-item">
             <a class="nav-link" href="/contact_me">Contact Me</a>
           </li>
-        </ul>         
+        </ul>
       </div>
     </div>
   </nav>
@@ -59,103 +59,107 @@
   {% endfor %}
   {%endwith%}
 
-  
 
+  <div class="container-fluid position-absolute m-0 p-0" style="min-height: 100vh;">
     {% block content %}
 
-    <div class='row'>
-      <!-- Header -->
-    <section class="header">
-      <div class='col'>
-        <div class='sun'>
-          <div>
-            <h1>I'm Tim</h1>
-            <p>a web developer and <br> tech enthusiast</p>
+      <div class='row'>
+        <!-- Header -->
+        <section class="header">
+          <div class='col'>
+            <div class='sun'>
+              <div>
+                <h1>I'm Tim</h1>
+                <p>a web developer and <br> tech enthusiast</p>
+              </div>
+              <img class='cloud' src='../static/images/cloud.png' alt='cloud'>
+              <img class='cloud' src='../static/images/cloud.png' alt='cloud'>
+            </div>
           </div>
-          <img class='cloud' src='../static/images/cloud.png' alt='cloud'>
-          <img class='cloud' src='../static/images/cloud.png' alt='cloud'>
-        </div>
+        </section>
       </div>
-    </section>
+
+
+
+      <!-- Short Bio -->
+      <section class='container lh-lg col-md-6 text-center'>
+        <div class="head-photo mx-auto ">
+          <img src="../static/images/headshot.jpg" width=200 />
+        </div>
+        <h2 class='text-center mt-2'>Hello,</h2>
+        <h5 class='lh-lg'>I am a Web Developer, PC Technichian and Python Developer. My passion for tech is what
+          led me to start TCCS.TECH.</h5>
+      </section>
+
+      <hr class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
+      <!-- Skills Section -->
+      <section id="skills" class="row text-center my-3">
+        <h1>My Skills</h1>
+        <!-- Pc Skills -->
+        <div class="skill col-md-6 mx-auto my-2 ">
+          <div class='my-5'>
+            <img class="float-end ps-2" src="../static/images/pc tech.png" width="20%" alt="pc repair" />
+            <h2 style="color: #009dae">Web Developer</h2>
+            <div class='d-flex text-start w-75 justify-content-center'>
+              <ul>
+                <li>
+                  <h4>Front End</h4>
+                  <ul>
+                    <li>REACT</li>
+                    <li>HTML</li>
+                    <li>JavaScript</li>
+                    <li>CSS</li>
+                    <li>Bootstrap</li>
+                  </ul>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <h4>Back End</h4>
+                  <ul>
+                    <li>Python</li>
+                    <li>FLASK</li>
+                    <li>DJANGO</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <h4>Please visit <a class='btn' href="{{url_for('workshop')}}">The Workshop</a> for more information.</h4>
+
+          </div>
+        </div>
+      </section>
+
+
+      <!-- Contact -->
+      <hr class="mx-auto w-50 mb-5" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
+
+      <section class='contact-me col-md-6  mb-5'>
+        <h2>Get In Touch</h2>
+        <h5 class='lh-lg'>Please use the contact button below if you're having some trouble with your pc or your want a
+          site developed.</h5>
+        <a class='btn' href="{{ url_for('contact_me') }}">Contact Me</a>
+      </section>
+
+      <!-- Used to wake the server for the workshop -->
+      <iframe title="rockin-j-ranch" src='https://rockin-j-ranch.herokuapp.com' style='display: none'></iframe>
+
+
+    {% endblock %}
+    <div class='w-100 my-auto position-absolute bottom-0 start-0'>
+      {% block footer %}
+      <footer class="mt-5">
+        <p>©2021 TCCS.TECH</p>
+      </footer>
+      {% endblock %}
     </div>
-    
-
-
-    <!-- Short Bio -->
-    <section class='container lh-lg col-md-6 text-center'>
-      <div class="head-photo mx-auto ">
-        <img src="../static/images/headshot.jpg" width=200 />
-      </div>
-      <h2 class='text-center mt-2'>Hello,</h2>
-      <h5 class='lh-lg'>I am a Web Developer, PC Technichian and Python Developer. My passion for tech is what
-        led me to start TCCS.TECH.</h5>
-    </section>
-
-    <hr class="mx-auto mt-5 w-50" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
-    <!-- Skills Section -->
-    <section id="skills" class="row text-center my-3">
-      <h1>My Skills</h1>
-      <!-- Pc Skills -->
-      <div class="skill col-md-6 mx-auto my-2 ">
-        <div class='my-5'>
-          <img class="float-end ps-2" src="../static/images/pc tech.png" width="20%" alt="pc repair" />
-          <h2 style="color: #009dae">Web Developer</h2>
-          <div class='d-flex text-start w-75 justify-content-center'>
-            <ul>
-              <li>
-                <h4>Front End</h4>
-                <ul>
-                  <li>REACT</li>
-                  <li>HTML</li>
-                  <li>JavaScript</li>
-                  <li>CSS</li>
-                  <li>Bootstrap</li>
-                </ul>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <h4>Back End</h4>
-                <ul>
-                  <li>Python</li>
-                  <li>FLASK</li>
-                  <li>DJANGO</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <h4>Please visit <a class='btn' href="{{url_for('workshop')}}">The Workshop</a> for more information.</h4>
-
-        </div>
-      </div>
-    </section>
+  
   </div>
- 
-  <!-- Contact -->
-  <hr class="mx-auto w-50 mb-5" style="border-bottom: none; border-top: 15px dotted #00edff; background: none">
-
-  <section class='contact-me col-md-6  mb-3'>
-    <h2>Get In Touch</h2>
-    <h5 class='lh-lg'>Please use the contact button below if you're having some trouble with your pc or your want a site developed.</h5>
-    <a class='btn' href="{{ url_for('contact_me') }}">Contact Me</a>
-  </section>
-
-  <!-- Used to wake the server for the workshop -->
-  <iframe src='https://rockin-j-ranch.herokuapp.com' style='display: none'></iframe>
 
 
-  {% endblock %}
+
 
   
-
-  <div class='footer mt-auto'>
-    {% block footer %}
-    <footer class="">
-      <p>©2021 TCCS.TECH</p>
-    </footer>
-    {% endblock %}
-  </div>
-
 
   <!-- Bootstrap Script -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
