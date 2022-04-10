@@ -14,7 +14,7 @@ from forms.contact_form import ContactForm
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
+app.config["SECRET_KEY"] = os.urandom(32)
 app.config["MAIL_SERVER"] = os.getenv('MAIL_SERVER')
 app.config["MAIL_USERNAME"] = os.getenv('MAIL_USERNAME')
 app.config["MAIL_PASSWORD"] = os.getenv('MAIL_PASSWORD')
@@ -40,7 +40,9 @@ def contact_me():
         msg = Message("Please Help Message", sender="tim@tccs.tech",
                       recipients=["tim@tccs.tech"])
         msg.body = request.form["message"]
+        mail.connect()
         mail.send(msg)
+        mail.quit()
         return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
     return render_template('/contact_page/contact.html', form=form)
 
