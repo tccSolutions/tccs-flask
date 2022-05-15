@@ -37,13 +37,16 @@ def index():
 def contact_me():
     form = ContactForm()
     if form.validate_on_submit():
-        msg = Message("Please Help Message", sender="tim@tccs.tech",
-                      recipients=["tim@tccs.tech"])
-        sender = request.form["email"]
-        message = request.form["message"]
-        msg.body = f"From:{sender}\n\n{message}"
-        mail.send(msg)      
-        return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
+        if request.form["bot_catcher"]:
+            pass
+        else:
+            msg = Message("Please Help Message", sender="tim@tccs.tech",
+                        recipients=["tim@tccs.tech"])
+            sender = request.form["email"]
+            message = request.form["message"]
+            msg.body = f"From:{sender}\n\n{message}"
+            mail.send(msg)      
+            return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
     return render_template('/contact_page/contact.html', form=form)
 
 
@@ -56,4 +59,4 @@ def workshop():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
