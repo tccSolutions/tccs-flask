@@ -19,10 +19,20 @@
             {{form.email(placeholder="Please enter your email.")}}
 
             {{form.message(placeholder="Please enter your message.", rows=10)}}
-            <input type="text" id="bot_catcher" name="bot_catcher" placeholder="Fill Me In Bot Man"/>
+            <input type="text" id="required" name="address" placeholder="Fill Me In Bot Man"/>
+            <input type="text" id="ip_address" name="ip_address"/>
 
             <input class='btn btn-success' type="submit" value="Send" />
         </form>
     </div>
 </section>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<script>
+    $.get("https://api.bigdatacloud.net/data/client-info", function(data){
+        console.log(data.ipString)
+        $('#ip_address').val(data.ipString)
+    })
+</script>
 {%endblock%}

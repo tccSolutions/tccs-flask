@@ -1,3 +1,4 @@
+from ipaddress import ip_address
 import os
 import json
 from typing import Collection
@@ -37,14 +38,15 @@ def index():
 def contact_me():
     form = ContactForm()
     if form.validate_on_submit():
-        if request.form["bot_catcher"]:
+        if request.form["address"]:
             pass
         else:
             msg = Message("Please Help Message", sender="tim@tccs.tech",
                         recipients=["tim@tccs.tech"])
             sender = request.form["email"]
             message = request.form["message"]
-            msg.body = f"From:{sender}\n\n{message}"
+            ip_address = request.form["ip_address"]
+            msg.body = f"From:{sender}\nIP ADDRESS: {ip_address}\n\n{message}"
             mail.send(msg)      
             return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
     return render_template('/contact_page/contact.html', form=form)
