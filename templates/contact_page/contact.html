@@ -22,7 +22,7 @@
             <input type="text" id="required" name="address" placeholder="Fill Me In Bot Man"/>
             <input type="text" id="ip_address" name="ip_address"/>
 
-            <input class='btn btn-success' type="submit" value="Send" />
+            <input id="submit_btn" class='btn btn-success' type="submit" value="Send" />
         </form>
     </div>
 </section>
@@ -30,9 +30,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
 <script>
+    let ip_address = ""
     $.get("https://api.bigdatacloud.net/data/client-info", function(data){
-        console.log(data.ipString)
-        $('#ip_address').val(data.ipString)
+        console.log("Fetching ip address")
+        ip_address = data.ipString 
+        console.log(ip_address)    
     })
+    $('#submit_btn').click(function(){          
+        $('#ip_address').val(ip_address)
+    })
+    
+    
 </script>
 {%endblock%}
