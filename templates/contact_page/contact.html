@@ -36,9 +36,14 @@
         ip_address = data.ipString 
         console.log(ip_address)    
     })
-    $('#submit_btn').click(function(){          
-        $('#ip_address').val(ip_address)
-    })
+    
+        $('#required').hide();        
+        $('#required').bind('input',function(){
+            console.log("changing")           
+            $('#submit_btn').remove();     
+            
+        })
+   
     
     
 </script>
