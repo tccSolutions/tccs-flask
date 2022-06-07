@@ -4,6 +4,7 @@ import json
 from typing import Collection
 import flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_recaptcha import ReCaptcha
 import gunicorn
 import psycopg2
 from flask import Flask, render_template, url_for, request, redirect, flash
@@ -23,6 +24,10 @@ app.config["MAIL_PORT"] = os.getenv('MAIL_PORT')
 app.config['MAIL_USE_SSL'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL_1", 'sqlite:///static/data/horse.db')
+app.config['RECAPTCHA_SITE_KEY'] = os.environ.get("RECAPTCHA_SITE_KEY")
+app.config['RECAPTCHA_SECRET_KEY'] =  os.environ.get("RECAPTCHA_SECRET_KEY")
+recaptcha = ReCaptcha(app)
+
 mail = Mail(app)
 
 # Routes
@@ -38,17 +43,18 @@ def index():
 def contact_me():
     form = ContactForm()
     if form.validate_on_submit():
-        if request.form["address"]:
-            pass
-        else:
-            msg = Message("Please Help Message", sender="tim@tccs.tech",
-                        recipients=["tim@tccs.tech"])
-            sender = request.form["email"]
-            message = request.form["message"]
-            ip_address = request.form["ip_address"]
-            msg.body = f"From:{sender}\nIP ADDRESS: {ip_address}\n\n{message}"
-            mail.send(msg)      
-            return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
+        if recaptcha.verify():
+            if request.form["address"]:
+                pass
+            else:
+                msg = Message("Please Help Message", sender="tim@tccs.tech",
+                            recipients=["tim@tccs.tech"])
+                sender = request.form["email"]
+                message = request.form["message"]
+                ip_address = request.form["ip_address"]
+                msg.body = f"From:{sender}\nIP ADDRESS: {ip_address}\n\n{message}"
+                mail.send(msg)      
+                return render_template('contact_page/contact_good.html', name=form.name.data, email=form.email.data)
     return render_template('/contact_page/contact.html', form=form)
 
 
